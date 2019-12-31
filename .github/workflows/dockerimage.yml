@@ -2,6 +2,8 @@ name: Docker Image CI
 
 on:
   push:
+    branches:
+      - master
   pull_request:
   schedule:
     - cron: 0 6 * * 2
@@ -9,26 +11,33 @@ on:
 jobs:
   dockerRegistry:
     name: Docker Registry
-    
+
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout master
-      uses: actions/checkout@master
-        
-    - name: Login to docker hub
-      if: success()
-      uses: actions-hub/docker/login@master
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Checkout master
+        uses: actions/checkout@master
 
-    - name: Build image
-      if: success()
-      run: docker build -t mpepping/jenkins:latest .
+      - name: Login to docker hub
+        if: success()
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push to docker registry
-      if: success()
-      uses: actions-hub/docker@master
-      with:
-        args: push mpepping/jenkins:latest
+      - name: Build image
+        if: success()
+        run: docker build -t mpepping/jenkins:latest .
+
+      - name: Push to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push mpepping/jenkins:latest
+
+      - name: Update Docker hub metadata
+        uses: docker://mpepping/docker-hub-metadata-github-action
+        env:
+          IMAGE: mpepping/jenkins
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
