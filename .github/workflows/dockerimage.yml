@@ -35,9 +35,9 @@ jobs:
         with:
           args: push mpepping/jenkins:latest
 
-      - name: Update Docker hub metadata
-        uses: docker://mpepping/docker-hub-metadata-github-action
-        env:
-          IMAGE: mpepping/jenkins
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+#      - name: Update Docker hub metadata
+#        uses: docker://mpepping/docker-hub-metadata-github-action
+#        env:
+#          IMAGE: mpepping/jenkins
+#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
