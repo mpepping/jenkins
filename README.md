@@ -1,4 +1,4 @@
-# Jenkins
+# Jenkins LTS
 
 `docker pull mpepping/jenkins:latest`
 
