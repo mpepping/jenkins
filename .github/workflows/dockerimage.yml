@@ -35,9 +35,10 @@ jobs:
         with:
           args: push mpepping/jenkins:latest
 
-      - name: Update Docker hub metadata
-        uses: docker://mpepping/docker-hub-metadata-github-action
-        env:
-          IMAGE: mpepping/jenkins
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+# 401 Unable to push README.md to Docker Hub
+#      - name: Update Docker hub metadata
+#        uses: docker://mpepping/docker-hub-metadata-github-action
+#        env:
+#          IMAGE: mpepping/jenkins
+#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
