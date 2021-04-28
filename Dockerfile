@@ -2,7 +2,6 @@ FROM jenkins/jenkins:lts
 
 LABEL maintainer "Martijn Pepping <martijn.pepping@automiq.nl>"
 
-# Switch to root for the build context
 USER root
 
 # Install pre-reqs
@@ -17,7 +16,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     usermod -aG docker,users jenkins
 
-# Switch to the runtime user
 USER jenkins
 
 # Set correct timezone
