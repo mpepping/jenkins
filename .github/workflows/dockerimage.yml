@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: 'Build'
+    name: 'Build Jenkins image'
     runs-on: ubuntu-latest
     steps:
       - name: "Build:checkout"
@@ -21,15 +21,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           registry: ghcr.io
-          username: "rguichard"
+          username: "mpepping"
           password: ${{ secrets.PAT }}
           repository: mpepping/jenkins
           tags: latest
-
-# 401 Unable to push README.md to Docker Hub
-#      - name: Update Docker hub metadata
-#        uses: docker://mpepping/docker-hub-metadata-github-action
-#        env:
-#          IMAGE: mpepping/jenkins
-#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
