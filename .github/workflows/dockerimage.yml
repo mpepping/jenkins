@@ -10,25 +10,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: 'Build Jenkins image'
+  dockerRegistry:
+    name: Docker Registry
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: "Build:checkout"
-        uses: actions/checkout@v2
-      - name: Log in
-        run: |
-          echo $PAT | docker login ghcr.io --username mpepping --password-stdin
+      - name: Checkout master
+        uses: actions/checkout@master
+
+      - name: Login to docker hub
+        if: success()
+        uses: actions-hub/docker/login@master
         env:
-          PAT: ${{ secrets.COMMITTER_TOKEN }}
+          DOCKER_USERNAME: mpepping
+          DOCKER_PASSWORD: ${{ secrets.PAT }}
+          DOCKER_REGISTRY_URL: ghcr.io
+
       - name: Build image
-        run: |
-          docker build --tag ghcr.io/mpepping/jenkins:latest
-        env:
-          VERSION: ${{ github.event.inputs.version }}
-      - name: Deploy image
-        run: |
-          docker push ghcr.io/mpepping/jenkins:latest
-        env:
-          VERSION: ${{ github.event.inputs.version }}
-            GIT_AUTH_TOKEN=${{ github.token }}
+        if: success()
+        run: docker build -t ghcr.io/mpepping/jenkins:latest .
+
+      - name: Push to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push ghcr.io/mpepping/jenkins:latest
+
+# 401 Unable to push README.md to Docker Hub
+#      - name: Update Docker hub metadata
+#        uses: docker://mpepping/docker-hub-metadata-github-action
+#        env:
+#          IMAGE: mpepping/jenkins
+#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
