@@ -10,31 +10,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  dockerRegistry:
-    name: Docker Registry
-
+  build:
+    name: 'Build'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout master
-        uses: actions/checkout@master
-
-      - name: Login to docker hub
+      - name: "Build:checkout"
+        uses: actions/checkout@v2
+      - name: 'Build:dockerimage'
         if: success()
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build image
-        if: success()
-        run: docker build -t mpepping/jenkins:latest .
-
-      - name: Push to docker registry
-        if: success()
-        uses: actions-hub/docker@master
+        uses: docker/build-push-action@v1
         with:
-          args: push mpepping/jenkins:latest
+          registry: ghcr.io
+          username: "rguichard"
+          password: ${{ secrets.PAT }}
+          repository: mpepping/jenkins
+          tags: latest
 
 # 401 Unable to push README.md to Docker Hub
 #      - name: Update Docker hub metadata
