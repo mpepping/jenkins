@@ -17,7 +17,7 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@master
 
-      - name: Login to docker hub
+      - name: Login to container registry
         if: success()
         uses: actions-hub/docker/login@master
         env:
@@ -25,11 +25,11 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.PAT }}
           DOCKER_REGISTRY_URL: ghcr.io
 
-      - name: Build image
+      - name: Build container image
         if: success()
         run: docker build -t ghcr.io/mpepping/jenkins:latest .
 
-      - name: Push to docker registry
+      - name: Push to container registry
         if: success()
         uses: actions-hub/docker@master
         with:
