@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Container Image CI
 
 on:
   push:
@@ -10,11 +10,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  dockerRegistry:
-    name: Docker Registry
-
+  containerRegistry:
+    name: Container Registry
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout master
         uses: actions/checkout@master
@@ -23,7 +21,7 @@ jobs:
         if: success()
         uses: actions-hub/docker/login@master
         env:
-          DOCKER_USERNAME: mpepping
+          DOCKER_USERNAME: ${{ secrets.USER }}
           DOCKER_PASSWORD: ${{ secrets.PAT }}
           DOCKER_REGISTRY_URL: ghcr.io
 
@@ -36,11 +34,3 @@ jobs:
         uses: actions-hub/docker@master
         with:
           args: push ghcr.io/mpepping/jenkins:latest
-
-# 401 Unable to push README.md to Docker Hub
-#      - name: Update Docker hub metadata
-#        uses: docker://mpepping/docker-hub-metadata-github-action
-#        env:
-#          IMAGE: mpepping/jenkins
-#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
