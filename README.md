@@ -42,7 +42,3 @@ volumes:
     driver: local
 ```
 
-## Version
-
-2.319.1-lts-jdk11
-
