@@ -2,6 +2,7 @@ FROM jenkins/jenkins:lts
 
 LABEL maintainer "Martijn Pepping <martijn.pepping@automiq.nl>"
 LABEL org.opencontainers.image.source https://github.com/mpepping/jenkins
+LABEL org.opencontainers.image.url https://github.com/mpepping/jenkins
 
 USER root
 
